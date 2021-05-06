@@ -4,7 +4,7 @@ const fs = require(`fs-extra`);
 const path = require(`path`);
 
 const {onPostBuild} = require(`../gatsby-node`);
-const utils = require('../utils');
+const utils = require(`../utils`);
 
 const pathPrefix = ``;
 
@@ -114,7 +114,7 @@ describe(`Test plugin sitemap`, () => {
               slug: path
             }
           }
-        } 
+        }
     }`;
 
         const options = {
@@ -197,6 +197,23 @@ describe(`sitemap index`, () => {
         utils.outputFile.mockResolvedValue(true);
 
         await onPostBuild({graphql, pathPrefix}, options);
+        const [sitemap] = utils.outputFile.mock.calls[0];
+
+        expect(sitemap).toEqual(path.join(`public`, `sitemap.xml`));
+    });
+
+    it(`set pathPrefix to sitemaps`, async () => {
+        global.__PATH_PREFIX__ = `/sky`;
+        utils.renameFile = jest.fn();
+        utils.renameFile.mockResolvedValue(true);
+
+        utils.writeFile = jest.fn();
+        utils.writeFile.mockResolvedValue(true);
+
+        utils.outputFile = jest.fn();
+        utils.outputFile.mockResolvedValue(true);
+
+        await onPostBuild({graphql, pathPrefix: `/sky`}, {});
         const [sitemap] = utils.outputFile.mock.calls[0];
 
         expect(sitemap).toEqual(path.join(`public`, `sitemap.xml`));

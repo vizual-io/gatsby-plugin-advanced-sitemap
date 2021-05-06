@@ -101,7 +101,7 @@ plugins: [
                     // Add a query level prefix to slugs, Don't get confused with global path prefix from Gatsby
                     // This will add a prefix to this perticular sitemap only
                     prefix: 'your-prefix/',
-                    // Custom Serializer 
+                    // Custom Serializer
                     serializer: (edges) => {
                         return edges.map(({ node }) => {
                             (...) // Custom logic to change final sitemap.
