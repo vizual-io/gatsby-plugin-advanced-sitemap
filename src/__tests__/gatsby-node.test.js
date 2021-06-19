@@ -221,4 +221,23 @@ describe(`sitemap index`, () => {
         expect(sitemap).toEqual(path.join(`public`, `sitemap.xml`))
         expect(xml).toContain(`http://dummy.url/sky/`)
     })
+
+    it(`set pathPrefix to sitemaps 2`, async () => {
+        global.__PATH_PREFIX__ = ``
+        utils.renameFile = jest.fn()
+        utils.renameFile.mockResolvedValue(true)
+
+        utils.writeFile = jest.fn()
+        utils.writeFile.mockResolvedValue(true)
+
+        utils.outputFile = jest.fn()
+        utils.outputFile.mockResolvedValue(true)
+
+        await onPostBuild({ graphql, pathPrefix: `` }, {})
+        const [sitemap] = utils.outputFile.mock.calls[0]
+        const [_, xml] = utils.outputFile.mock.calls[1]
+
+        expect(sitemap).toEqual(path.join(`public`, `sitemap.xml`))
+        expect(xml).toContain(`http://dummy.url/page-1`)
+    })
 })

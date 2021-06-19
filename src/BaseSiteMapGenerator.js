@@ -39,7 +39,7 @@ export default class BaseSiteMapGenerator {
         const urlElements = _.map(_.map(sortedNodes, `node`), function (urlElement) {
             return {
                 url: _.map(urlElement.url, function (item) {
-                    if (item.loc) {
+                    if (item.loc && options.pathPrefix.length) {
                         return {
                             loc: item.loc.replace(options.siteUrl, url.resolve(options.siteUrl, options.pathPrefix)),
                         }
